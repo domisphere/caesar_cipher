@@ -1,9 +1,10 @@
+from core.constans import STATUS_ENCRYPTED, STATUS_DECRYPTED, ROT13, ROT47
 from core.text import Text
 
 
 class Cipher:
 
-    def rot13(self, text_obj):
+    def rot13(self, text_obj: Text) -> Text:
         new_text = ""
 
         for char in text_obj.text:
@@ -14,12 +15,12 @@ class Cipher:
             else:
                 new_text += char
 
-        new_status = "encrypted" if text_obj.status == "decrypted" else "decrypted"
+        new_status = STATUS_ENCRYPTED if text_obj.status == STATUS_DECRYPTED else STATUS_DECRYPTED
 
-        return Text(text=new_text, rot_type="rot13", status=new_status)
+        return Text(text=new_text, rot_type=ROT13, status=new_status)
 
 
-    def rot47(self, text_obj):
+    def rot47(self, text_obj: Text) -> Text:
         new_text = ""
 
         for char in text_obj.text:
@@ -27,9 +28,11 @@ class Cipher:
             if 33 <= ascii_code <= 126:
                 new_char = chr(33 + ((ascii_code - 33 + 47) % 94))
                 new_text += new_char
+            else:
+                new_text += char
 
-        new_status = "encrypted" if text_obj.status == "decrypted" else "decrypted"
+        new_status = STATUS_ENCRYPTED if text_obj.status == STATUS_DECRYPTED else STATUS_DECRYPTED
 
-        return Text(text=new_text, rot_type="rot47", status=new_status)
+        return Text(text=new_text, rot_type=ROT47, status=new_status)
 
 

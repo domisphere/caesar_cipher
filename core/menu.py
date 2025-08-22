@@ -1,5 +1,6 @@
 import sys
 
+from core.constans import STATUS_DECRYPTED, STATUS_ENCRYPTED
 from core.manager import Manager
 
 
@@ -8,7 +9,7 @@ class Menu:
         self.manager = Manager()
         self.options = {
             "1": self.add_text_option,
-            "2": self.manager.show_buffer,
+            "2": self.show_buffer_option,
             "3": self.encrypt_option,
             "4": self.decrypt_option,
             "5": self.save_to_file_option,
@@ -16,7 +17,7 @@ class Menu:
             "7": self.exit_program
         }
 
-    def run(self):
+    def run(self) -> None:
         while True:
             print("\n--- MENU ---")
             print("1. Add text")
@@ -32,7 +33,7 @@ class Menu:
                 case "1":
                     self.add_text_option()
                 case "2":
-                    self.manager.show_buffer()
+                    self.show_buffer_option()
                 case "3":
                     self.encrypt_option()
                 case "4":
@@ -44,34 +45,48 @@ class Menu:
                 case "7":
                     self.exit_program()
 
-    def add_text_option(self):
+    def add_text_option(self) -> None:
         user_text = input("Enter text: ")
         self.manager.add_text(user_text)
+        print(f"Text '{user_text}' has been added to the buffer")
 
-    def encrypt_option(self):
-        self.manager.show_buffer(status_filter="decrypted")
+    def show_buffer_option(self, status_filter=None) -> None:
+        lines = self.manager.get_buffer_strings(status_filter=status_filter)
+        if not lines:
+            print("Buffer is empty")
+        else:
+            print("Texts in buffer:")
+            for line in lines:
+                print(line)
+
+    def encrypt_option(self) -> None:
+        self.show_buffer_option(status_filter=STATUS_DECRYPTED)
         index = int(input("Select text: ")) - 1
         rot_type = input("Enter rot type(rot13, rot47): ")
 
         self.manager.encrypt(index=index, rot_type=rot_type)
+        print("Text is encrypted")
 
-    def decrypt_option(self):
-        self.manager.show_buffer(status_filter="encrypted")
+    def decrypt_option(self) -> None:
+        self.show_buffer_option(status_filter=STATUS_ENCRYPTED)
         index = int(input("Select text: ")) - 1
 
         self.manager.decrypt(index=index)
+        print("Text is decrypted")
 
-    def save_to_file_option(self):
+    def save_to_file_option(self) -> None:
         filename  = input("Enter file name: ")
         file_path = f"data/{filename}.json"
         self.manager.save_to_file(filename=file_path)
+        print("File saved")
 
-    def load_from_file_option(self):
+    def load_from_file_option(self) -> None:
         filename = input("Enter file name: ")
         file_path = f"data/{filename}.json"
         self.manager.load_from_file(filename=file_path)
+        print("File loaded")
 
-    def exit_program(self):
+    def exit_program(self) -> None:
         print("Good bye!")
         sys.exit(0)
 

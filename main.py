@@ -1,8 +1,13 @@
 from core.menu import Menu
 
 
-if __name__ == "__main__":
+def main():
     menu = Menu()
     menu.run()
+
+
+if __name__ == "__main__":
+    main()
+
 
 

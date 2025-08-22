@@ -1,5 +1,4 @@
 import json
-import os
 from dataclasses import asdict
 
 from core.text import Text
@@ -7,15 +6,13 @@ from core.text import Text
 
 class FileHandler:
 
-    def save_to_file(self, filename, buffer):
+    def save_to_file(self, filename: str, buffer: list[Text]) -> None:
         new_buffer = [asdict(obj) for obj in buffer]
 
         with open(filename, "w") as save_file:
             json.dump(new_buffer, save_file, indent=4)
 
-    def load_from_file(self, filename):
-        if not os.path.exists(filename):
-            return []
+    def load_from_file(self, filename: str) -> list[Text]:
         try:
             with open(filename, "r" ) as read_file:
                 loaded_data = json.load(read_file)

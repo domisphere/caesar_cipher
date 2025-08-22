@@ -1,4 +1,5 @@
 from core.cipher import Cipher
+from core.constans import STATUS_DECRYPTED, ROT13, ROT47
 from core.file_handler import FileHandler
 from core.text import Text
 
@@ -8,38 +9,37 @@ class Manager:
         self.buffer =  []
         self.file_handler = FileHandler()
         self.cipher = Cipher()
-        self.cipher_map = {"rot13": self.cipher.rot13, "rot47": self.cipher.rot47}
+        self.cipher_map = {ROT13: self.cipher.rot13, ROT47: self.cipher.rot47}
 
-    def add_text(self, user_text):
-        text_obj = Text(text=user_text, rot_type="", status="decrypted")
+    def add_text(self, user_text: str) -> None:
+        text_obj = Text(text=user_text, rot_type="", status=STATUS_DECRYPTED)
         self.buffer.append(text_obj)
-        print("Text has been added to the buffer")
 
-    def encrypt(self, index, rot_type):
+    def encrypt(self, index: int, rot_type: str) -> None:
         text_object = self.buffer[index]
 
         new_text_obj = self.cipher_map[rot_type](text_object)
         self.buffer[index] = new_text_obj
-        print(f"Text {text_object.text} is {new_text_obj.status}")
 
-    def decrypt(self, index):
+    def decrypt(self, index: int) -> None:
         text_object = self.buffer[index]
 
         new_text_obj = self.cipher_map[text_object.rot_type](text_object)
-        new_text_obj.rot_type = ""
         self.buffer[index] = new_text_obj
-        print(f"Text {text_object.text} is {new_text_obj.status}")
+        return text_object
 
-    def show_buffer(self, status_filter=None):
-        print("Texts in buffer:")
+    def get_buffer_strings(self, status_filter=None) -> list[str]:
+        lines = []
         for index, text_obj in enumerate(self.buffer, start=1):
             if status_filter is None or text_obj.status == status_filter:
-                print(f"{index}. {text_obj.text} - rot type: {text_obj.rot_type}, {text_obj.status}")
+                line = f"{index}. {text_obj.text} - rot type: {text_obj.rot_type}, {text_obj.status}"
+                lines.append(line)
+        return lines
 
-    def save_to_file(self, filename):
+    def save_to_file(self, filename: str) -> None:
         self.file_handler.save_to_file(filename, self.buffer)
 
-    def load_from_file(self, filename):
+    def load_from_file(self, filename: str) -> None:
         self.buffer = self.file_handler.load_from_file(filename)
 
 
