@@ -1,4 +1,4 @@
-from text import Text
+from core.text import Text
 
 
 class Cipher:
