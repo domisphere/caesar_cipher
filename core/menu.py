@@ -52,8 +52,8 @@ class Menu:
         self.manager.add_text(user_text)
         print(f"Text '{user_text}' has been added to the buffer")
 
-    def show_buffer_option(self, status_filter=None) -> None:
-        lines = self.manager.get_buffer_strings(status_filter=status_filter)
+    def show_buffer_option(self) -> None:
+        lines = self.manager.get_buffer_strings()
         if not lines:
             print("Buffer is empty")
         else:
@@ -63,19 +63,19 @@ class Menu:
 
     def encrypt_option(self) -> None:
         while True:
-            self.show_buffer_option(status_filter=STATUS_DECRYPTED)
+            self.show_buffer_option()
             index = int(input("Select text: ")) - 1
             rot_type = input("Enter rot type(rot13, rot47): ")
             try:
                 self.manager.encrypt(index=index, rot_type=rot_type)
-            except (ValueError, IndexError) as e:
+            except (ValueError, IndexError, TypeError) as e:
                 print(f"{e}, try again\n")
             else:
                 print("Text is encrypted")
                 break
 
     def decrypt_option(self) -> None:
-        self.show_buffer_option(status_filter=STATUS_ENCRYPTED)
+        self.show_buffer_option()
         index = int(input("Select text: ")) - 1
 
         self.manager.decrypt(index=index)

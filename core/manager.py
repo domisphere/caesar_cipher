@@ -1,5 +1,5 @@
 from core.cipher import Cipher
-from core.constans import STATUS_DECRYPTED, ROT13, ROT47
+from core.constans import STATUS_DECRYPTED, ROT13, ROT47, STATUS_ENCRYPTED
 from core.file_handler import FileHandler
 from core.text import Text
 
@@ -23,6 +23,10 @@ class Manager:
             raise ValueError(f"Unsupported cipher type: {rot_type}")
 
         text_object = self.buffer[index]
+
+        if text_object.status == STATUS_ENCRYPTED:
+            raise TypeError("Text is already encrypted")
+
         new_text_obj = self.cipher_map[rot_type](text_object)
         self.buffer[index] = new_text_obj
 
@@ -33,12 +37,11 @@ class Manager:
         self.buffer[index] = new_text_obj
         return text_object
 
-    def get_buffer_strings(self, status_filter=None) -> list[str]:
+    def get_buffer_strings(self) -> list[str]:
         lines = []
         for index, text_obj in enumerate(self.buffer, start=1):
-            if status_filter is None or text_obj.status == status_filter:
-                line = f"{index}. {text_obj.text} - rot type: {text_obj.rot_type}, {text_obj.status}"
-                lines.append(line)
+            line = f"{index}. {text_obj.text} - rot type: {text_obj.rot_type}, {text_obj.status}"
+            lines.append(line)
         return lines
 
     def save_to_file(self, filename: str) -> None:
