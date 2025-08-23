@@ -27,7 +27,7 @@ class Menu:
             print("5. Save to file")
             print("6. Load from file")
             print("7. Exit")
-            choice = input("Enter option: ")
+            choice = input("Choose an option: ")
 
             match choice:
                 case "1":
@@ -44,6 +44,8 @@ class Menu:
                     self.load_from_file_option()
                 case "7":
                     self.exit_program()
+                case _:
+                    print("Invalid choice, choose (1-7)")
 
     def add_text_option(self) -> None:
         user_text = input("Enter text: ")
@@ -60,12 +62,17 @@ class Menu:
                 print(line)
 
     def encrypt_option(self) -> None:
-        self.show_buffer_option(status_filter=STATUS_DECRYPTED)
-        index = int(input("Select text: ")) - 1
-        rot_type = input("Enter rot type(rot13, rot47): ")
-
-        self.manager.encrypt(index=index, rot_type=rot_type)
-        print("Text is encrypted")
+        while True:
+            self.show_buffer_option(status_filter=STATUS_DECRYPTED)
+            index = int(input("Select text: ")) - 1
+            rot_type = input("Enter rot type(rot13, rot47): ")
+            try:
+                self.manager.encrypt(index=index, rot_type=rot_type)
+            except (ValueError, IndexError) as e:
+                print(f"{e}, try again\n")
+            else:
+                print("Text is encrypted")
+                break
 
     def decrypt_option(self) -> None:
         self.show_buffer_option(status_filter=STATUS_ENCRYPTED)

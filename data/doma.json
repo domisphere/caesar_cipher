@@ -1,0 +1,22 @@
+[
+    {
+        "text": "dominik",
+        "rot_type": "",
+        "status": "decrypted"
+    },
+    {
+        "text": "emnfn",
+        "rot_type": "rot13",
+        "status": "encrypted"
+    },
+    {
+        "text": "klaudia",
+        "rot_type": "",
+        "status": "decrypted"
+    },
+    {
+        "text": "@=<2",
+        "rot_type": "rot47",
+        "status": "encrypted"
+    }
+]

@@ -7,10 +7,10 @@ from core.text import Text
 class FileHandler:
 
     def save_to_file(self, filename: str, buffer: list[Text]) -> None:
-        new_buffer = [asdict(obj) for obj in buffer]
+        dict_buffer = [asdict(obj) for obj in buffer]
 
-        with open(filename, "w") as save_file:
-            json.dump(new_buffer, save_file, indent=4)
+        with open(filename, "w") as safe_file:
+            json.dump(dict_buffer, safe_file, indent=4)
 
     def load_from_file(self, filename: str) -> list[Text]:
         try:

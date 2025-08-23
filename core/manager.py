@@ -16,8 +16,13 @@ class Manager:
         self.buffer.append(text_obj)
 
     def encrypt(self, index: int, rot_type: str) -> None:
-        text_object = self.buffer[index]
+        if index < 0 or index >= len(self.buffer):
+            raise IndexError("Invalid text index")
 
+        if rot_type not in self.cipher_map:
+            raise ValueError(f"Unsupported cipher type: {rot_type}")
+
+        text_object = self.buffer[index]
         new_text_obj = self.cipher_map[rot_type](text_object)
         self.buffer[index] = new_text_obj
 
