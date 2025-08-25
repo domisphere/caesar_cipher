@@ -18,28 +18,25 @@ class Menu:
             "6": self.exit_program
         }
 
-
+    def main_menu(self) -> None:
+        print("\n--- MENU ---")
+        print("1. Add text")
+        print("2. Show buffer")
+        print("3. Encrypt/Decrypt")
+        print("4. Save to file")
+        print("5. Load from file")
+        print("6. Exit")
 
     def run(self) -> None:
         while True:
             self.main_menu()
             choice = input("Choose an option: ")
 
-            match choice:
-                case "1":
-                    self.add_text()
-                case "2":
-                    self.show_buffer()
-                case "3":
-                    self.encrypt_decrypt()
-                case "4":
-                    self.save_to_file()
-                case "5":
-                    self.load_from_file()
-                case "6":
-                    self.exit_program()
-                case _:
-                    print("Invalid choice, choose (1-6)")
+            action = self.options.get(choice)
+            if action:
+                action()
+            else:
+                print("Invalid choice, choose (1-6)")
 
     def add_text(self) -> None:
         user_text = input("Enter text: ")
