@@ -11,16 +11,9 @@ class Cipher(ABC):
         pass
 
     @abstractmethod
-    def process(self, text_obj, process_type):
+    def process(self, text_obj, rot_type, status):
         pass
 
-    # @abstractmethod
-    # def encrypt(self, text_obj: Text) -> Text:
-    #     pass
-    #
-    # @abstractmethod
-    # def decrypt(self, text_obj: Text) -> Text:
-    #     pass
 
 class CipherRot13(Cipher):
     def cipher(self, text_obj: Text) -> str:
@@ -36,20 +29,10 @@ class CipherRot13(Cipher):
 
         return new_text
 
-    def process(self, text_obj, process_type):
+    def process(self, text_obj, rot_type, status):
         text = self.cipher(text_obj)
 
-        return Text(text=text, rot_type=ROT13, status=process_type)
-
-    # def encrypt(self, text_obj: Text) -> Text:
-    #     text = self.cipher(text_obj)
-    #
-    #     return Text(text=text, rot_type=ROT13, status=STATUS_ENCRYPTED)
-    #
-    # def decrypt(self, text_obj: Text) -> Text:
-    #     text = self.cipher(text_obj)
-    #
-    #     return Text(text=text, rot_type=ROT13, status=STATUS_DECRYPTED)
+        return Text(text=text, rot_type=rot_type, status=status)
 
 
 class CipherRot47(Cipher):
@@ -67,15 +50,10 @@ class CipherRot47(Cipher):
 
         return new_text
 
-    def encrypt(self, text_obj: Text) -> Text:
+    def process(self, text_obj, rot_type, status):
         text = self.cipher(text_obj)
 
-        return Text(text=text, rot_type=ROT47, status=STATUS_ENCRYPTED)
-
-    def decrypt(self, text_obj: Text) -> Text:
-        text = self.cipher(text_obj)
-
-        return Text(text=text, rot_type=ROT47, status=STATUS_DECRYPTED)
+        return Text(text=text, rot_type=rot_type, status=status)
 
 
 def cipher_factory(rot_type: str) -> Cipher:

@@ -1,7 +1,7 @@
 import json
 import sys
 
-from core.exceptions import UnsupportedCipherError, EncryptionError, DecryptionError
+from core.exceptions import UnsupportedCipherError
 from core.manager import Manager
 from core.file_handler import FileHandler
 
@@ -12,22 +12,20 @@ class Menu:
         self.options = {
             "1": self.add_text,
             "2": self.show_buffer,
-            "3": self.encrypt,
-            "4": self.decrypt,
-            "5": self.save_to_file,
-            "6": self.load_from_file,
-            "7": self.exit_program
+            "3": self.encrypt_decrypt,
+            "4": self.save_to_file,
+            "5": self.load_from_file,
+            "6": self.exit_program
         }
 
     def main_menu(self) -> None:
         print("\n--- MENU ---")
         print("1. Add text")
         print("2. Show buffer")
-        print("3. Encrypt/")
-        print("4. Decrypt")
-        print("5. Save to file")
-        print("6. Load from file")
-        print("7. Exit")
+        print("3. Encrypt/Decrypt")
+        print("4. Save to file")
+        print("5. Load from file")
+        print("6. Exit")
 
     def run(self) -> None:
         while True:
@@ -40,17 +38,15 @@ class Menu:
                 case "2":
                     self.show_buffer()
                 case "3":
-                    self.encrypt()
+                    self.encrypt_decrypt()
                 case "4":
-                    self.decrypt()
-                case "5":
                     self.save_to_file()
-                case "6":
+                case "5":
                     self.load_from_file()
-                case "7":
+                case "6":
                     self.exit_program()
                 case _:
-                    print("Invalid choice, choose (1-7)")
+                    print("Invalid choice, choose (1-6)")
 
     def add_text(self) -> None:
         user_text = input("Enter text: ")
@@ -66,7 +62,7 @@ class Menu:
             for line in lines:
                 print(line)
 
-    def encrypt(self) -> None:
+    def encrypt_decrypt(self) -> None:
         while True:
             self.show_buffer()
             try:
@@ -79,30 +75,13 @@ class Menu:
             while True:
                 rot_type = input("Enter rot type(rot13, rot47): ")
                 try:
-                    self.manager.encrypt(index=index, rot_type=rot_type)
+                    self.manager.process_cipher(index=index, rot_type=rot_type)
                 except UnsupportedCipherError as e:
                     print(f"{e}, try again\n")
                     continue
-                except EncryptionError as e:
-                    print(e)
-                    return
                 else:
                     print("Text is encrypted")
                     return
-    # chyba lepiej zrobić jedną funkcję encrypt_decrypt()
-    def decrypt(self) -> None:
-        while True:
-            self.show_buffer()
-            try:
-                index = int(input("Select text: ")) - 1
-                self.manager.decrypt(index=index)
-            except (IndexError, ValueError) as e:
-                print(f"Invalid index, try again\n")
-            except DecryptionError as e:
-                print(e)
-            else:
-                print("Text is decrypted")
-                break
 
     def save_to_file(self) -> None:
         filename  = input("Enter file name: ")
