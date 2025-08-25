@@ -18,14 +18,7 @@ class Menu:
             "6": self.exit_program
         }
 
-    def main_menu(self) -> None:
-        print("\n--- MENU ---")
-        print("1. Add text")
-        print("2. Show buffer")
-        print("3. Encrypt/Decrypt")
-        print("4. Save to file")
-        print("5. Load from file")
-        print("6. Exit")
+
 
     def run(self) -> None:
         while True:
