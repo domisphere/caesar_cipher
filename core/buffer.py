@@ -10,6 +10,8 @@ class Buffer:
         self.texts.append(text_obj)
 
     def get(self, index: int) -> Text:
+        if index < 0 or index >= len(self.texts):
+            raise IndexError("Invalid index")
         return self.texts[index]
 
     def update(self, index: int, text_obj: Text) -> None:

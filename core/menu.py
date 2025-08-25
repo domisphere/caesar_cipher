@@ -55,30 +55,29 @@ class Menu:
     def encrypt_decrypt(self) -> None:
         while True:
             self.show_buffer()
+
             try:
                 index = int(input("Select text: ")) - 1
-                _ = self.manager.buffer.texts[index]
-            except (IndexError, ValueError):
-                print(f"Invalid index, try again\n")
+                _ = self.manager.buffer.get(index)
+            except (ValueError, IndexError):
+                print("Invalid index, try again\n")
                 continue
 
-            while True:
-                rot_type = input("Enter rot type(rot13, rot47): ")
-                try:
-                    self.manager.process_cipher(index=index, rot_type=rot_type)
-                except UnsupportedCipherError as e:
-                    print(f"{e}, try again\n")
-                    continue
-                else:
-                    print("Text is encrypted")
-                    return
+            rot_type = input("Enter rot type(rot13, rot47): ")
+            try:
+                status = self.manager.process_cipher(index=index, rot_type=rot_type)
+            except UnsupportedCipherError as e:
+                print(f"{e}, try again\n")
+                continue
+            else:
+                print(f"Text is {status}")
+                return
 
     def save_to_file(self) -> None:
         filename  = input("Enter file name: ")
-        file_path = f"data/{filename}.json"
 
         try:
-            self.manager.save_to_file(filename=file_path)
+            self.manager.save_to_file(filename=filename)
         except OSError as e:
             print(f"Error saving file: {e}")
         else:
@@ -86,10 +85,9 @@ class Menu:
 
     def load_from_file(self) -> None:
         filename = input("Enter file name: ")
-        file_path = f"data/{filename}.json"
 
         try:
-            self.manager.load_from_file(filename=file_path)
+            self.manager.load_from_file(filename=filename)
         except FileNotFoundError:
             print("File not found")
         except json.JSONDecodeError:

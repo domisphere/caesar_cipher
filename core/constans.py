@@ -3,5 +3,3 @@ STATUS_ENCRYPTED = "encrypted"
 
 ROT13 = "rot13"
 ROT47 = "rot47"
-
-AVAILABLE_CIPHERS = [ROT13, ROT47]

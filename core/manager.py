@@ -29,10 +29,14 @@ class Manager:
 
         self.buffer.update(index=index, text_obj=new_text_obj)
 
+        return new_text_obj.status
+
     def save_to_file(self, filename: str) -> None:
+        filename =  f"data/{filename}.json"
         self.file_handler.save_to_file(filename, self.buffer.to_dict_list())
 
     def load_from_file(self, filename: str) -> None:
+        filename = f"data/{filename}.json"
         loaded_data = self.file_handler.load_from_file(filename)
 
         self.buffer.from_dict_list(loaded_data)
