@@ -1,10 +1,29 @@
 from core.constans import STATUS_ENCRYPTED, STATUS_DECRYPTED, ROT13, ROT47
 from core.text import Text
+from core.exceptions import UnsupportedCipherError
+
+from abc import ABC, abstractmethod
 
 
-class Cipher:
+class Cipher(ABC):
+    @abstractmethod
+    def cipher(self, text_obj: Text) -> str:
+        pass
 
-    def rot13(self, text_obj: Text) -> Text:
+    @abstractmethod
+    def process(self, text_obj, process_type):
+        pass
+
+    # @abstractmethod
+    # def encrypt(self, text_obj: Text) -> Text:
+    #     pass
+    #
+    # @abstractmethod
+    # def decrypt(self, text_obj: Text) -> Text:
+    #     pass
+
+class CipherRot13(Cipher):
+    def cipher(self, text_obj: Text) -> str:
         new_text = ""
 
         for char in text_obj.text:
@@ -15,12 +34,27 @@ class Cipher:
             else:
                 new_text += char
 
-        new_status = STATUS_ENCRYPTED if text_obj.status == STATUS_DECRYPTED else STATUS_DECRYPTED
+        return new_text
 
-        return Text(text=new_text, rot_type=ROT13, status=new_status)
+    def process(self, text_obj, process_type):
+        text = self.cipher(text_obj)
+
+        return Text(text=text, rot_type=ROT13, status=process_type)
+
+    # def encrypt(self, text_obj: Text) -> Text:
+    #     text = self.cipher(text_obj)
+    #
+    #     return Text(text=text, rot_type=ROT13, status=STATUS_ENCRYPTED)
+    #
+    # def decrypt(self, text_obj: Text) -> Text:
+    #     text = self.cipher(text_obj)
+    #
+    #     return Text(text=text, rot_type=ROT13, status=STATUS_DECRYPTED)
 
 
-    def rot47(self, text_obj: Text) -> Text:
+class CipherRot47(Cipher):
+
+    def cipher(self, text_obj: Text) -> str:
         new_text = ""
 
         for char in text_obj.text:
@@ -31,8 +65,23 @@ class Cipher:
             else:
                 new_text += char
 
-        new_status = STATUS_ENCRYPTED if text_obj.status == STATUS_DECRYPTED else STATUS_DECRYPTED
+        return new_text
 
-        return Text(text=new_text, rot_type=ROT47, status=new_status)
+    def encrypt(self, text_obj: Text) -> Text:
+        text = self.cipher(text_obj)
+
+        return Text(text=text, rot_type=ROT47, status=STATUS_ENCRYPTED)
+
+    def decrypt(self, text_obj: Text) -> Text:
+        text = self.cipher(text_obj)
+
+        return Text(text=text, rot_type=ROT47, status=STATUS_DECRYPTED)
 
 
+def cipher_factory(rot_type: str) -> Cipher:
+    if rot_type == ROT13:
+        return CipherRot13()
+    elif rot_type == ROT47:
+        return CipherRot47()
+    else:
+        raise UnsupportedCipherError(f"Unsupported rot type: {rot_type}")

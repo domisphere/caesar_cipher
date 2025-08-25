@@ -1,54 +1,65 @@
-from core.cipher import Cipher
-from core.constans import STATUS_DECRYPTED, ROT13, ROT47, STATUS_ENCRYPTED
-from core.file_handler import FileHandler
+from dataclasses import asdict
+
+from core.cipher import cipher_factory
+from core.constans import STATUS_DECRYPTED, STATUS_ENCRYPTED
 from core.text import Text
+from core.exceptions import EncryptionError, DecryptionError
+from core.buffer import Buffer
 
 
 class Manager:
-    def __init__(self):
-        self.buffer =  []
-        self.file_handler = FileHandler()
-        self.cipher = Cipher()
-        self.cipher_map = {ROT13: self.cipher.rot13, ROT47: self.cipher.rot47}
+    def __init__(self, file_handler):
+        self.buffer =  Buffer()
+        self.file_handler = file_handler
 
     def add_text(self, user_text: str) -> None:
         text_obj = Text(text=user_text, rot_type="", status=STATUS_DECRYPTED)
-        self.buffer.append(text_obj)
+        self.buffer.add(text_obj)
 
-    def encrypt(self, index: int, rot_type: str) -> None:
-        if index < 0 or index >= len(self.buffer):
-            raise IndexError("Invalid text index")
+    def process(self, index, rot_type):
+        text_obj = self.buffer.get(index=index)
 
-        if rot_type not in self.cipher_map:
-            raise ValueError(f"Unsupported cipher type: {rot_type}")
+        cipher = cipher_factory(rot_type=rot_type)
 
-        text_object = self.buffer[index]
+        if text_obj.status == STATUS_ENCRYPTED:
+            new_text_obj = cipher.process(text_obj=text_obj, process_type="decrypted")
+        elif text_obj.status == STATUS_DECRYPTED:
+            new_text_obj = cipher.process(text_obj=text_obj, process_type="encrypted")
 
-        if text_object.status == STATUS_ENCRYPTED:
-            raise TypeError("Text is already encrypted")
+        self.buffer.update(index=index, text_obj=new_text_obj)
 
-        new_text_obj = self.cipher_map[rot_type](text_object)
-        self.buffer[index] = new_text_obj
 
-    def decrypt(self, index: int) -> None:
-        text_object = self.buffer[index]
 
-        new_text_obj = self.cipher_map[text_object.rot_type](text_object)
-        self.buffer[index] = new_text_obj
-        return text_object
 
-    def get_buffer_strings(self) -> list[str]:
-        lines = []
-        for index, text_obj in enumerate(self.buffer, start=1):
-            line = f"{index}. {text_obj.text} - rot type: {text_obj.rot_type}, {text_obj.status}"
-            lines.append(line)
-        return lines
+    # def encrypt(self, index: int, rot_type: str) -> None:
+    #     text_obj = self.buffer.get(index=index)
+    #
+    #     if text_obj.status == STATUS_ENCRYPTED:
+    #         raise EncryptionError(f"Text '{text_obj.text}' is already encrypted")
+    #
+    #     cipher = cipher_factory(rot_type=rot_type)
+    #     new_text_obj = cipher.encrypt(text_obj)
+    #
+    #     self.buffer.update(index=index, text_obj=new_text_obj)
+    #
+    # def decrypt(self, index: int) -> None:
+    #     text_obj = self.buffer.get(index=index)
+    #
+    #     if text_obj.status == STATUS_DECRYPTED:
+    #         raise DecryptionError(f"Text '{text_obj.text}' is already decrypted")
+    #
+    #     cipher = cipher_factory(text_obj.rot_type)
+    #     new_text_obj = cipher.decrypt(text_obj)
+    #
+    #     self.buffer.update(index=index, text_obj=new_text_obj)
 
     def save_to_file(self, filename: str) -> None:
-        self.file_handler.save_to_file(filename, self.buffer)
+        self.file_handler.save_to_file(filename, self.buffer.to_dict_list())
 
     def load_from_file(self, filename: str) -> None:
-        self.buffer = self.file_handler.load_from_file(filename)
+        loaded_data = self.file_handler.load_from_file(filename)
+
+        self.buffer.from_dict_list(loaded_data)
 
 
 
