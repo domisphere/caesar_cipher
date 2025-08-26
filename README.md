@@ -9,8 +9,8 @@ The program allows you to add texts, manage a buffer, save to JSON files, and lo
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/rot-cipher-manager.git
-   cd rot-cipher-manager
+   git clone https://github.com/domisphere/caesar_cipher.git
+   cd caesar_cipher
 
 
 📌 Example Usage
@@ -29,19 +29,23 @@ Text 'Hello World' has been added to the buffer
 
 
 📂 Project Structure
-
+```
 project/
 ├── core/
-│ ├── cipher.py
-│ ├── manager.py
-│ ├── buffer.py
-│ ├── text.py
-│ └── file_handler.py
+│   ├── cipher.py
+│   ├── manager.py
+│   ├── buffer.py
+│   ├── text.py
+│   ├── constans.py
+│   ├── exceptions.py
+│   ├── menu.py
+│   └── file_handler.py
 ├── tests/
-│ ├── test_cipher.py
-│ └── ...
+│   ├── test_cipher.py
+│   └── ...
 ├── main.py
 └── README.md
+```
 
 
 👤 Author
