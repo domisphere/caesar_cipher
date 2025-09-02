@@ -2,6 +2,7 @@ from dataclasses import asdict
 
 from core.text import Text
 
+
 class Buffer:
     def __init__(self):
         self.texts: list[Text] = []

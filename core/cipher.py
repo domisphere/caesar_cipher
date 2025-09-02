@@ -1,4 +1,4 @@
-from core.constans import STATUS_ENCRYPTED, STATUS_DECRYPTED, ROT13, ROT47
+from core.constans import ROT13, ROT47
 from core.text import Text
 from core.exceptions import UnsupportedCipherError
 
@@ -16,6 +16,7 @@ class Cipher(ABC):
 
 
 class CipherRot13(Cipher):
+
     def cipher(self, text_obj: Text) -> str:
         new_text = ""
 

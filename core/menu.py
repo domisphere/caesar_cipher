@@ -4,11 +4,12 @@ import sys
 from core.exceptions import UnsupportedCipherError
 from core.manager import Manager
 from core.file_handler import FileHandler
+from core.buffer import Buffer
 
 
 class Menu:
     def __init__(self):
-        self.manager = Manager(file_handler=FileHandler())
+        self.manager = Manager(buffer=Buffer(), file_handler=FileHandler())
         self.options = {
             "1": self.add_text,
             "2": self.show_buffer,

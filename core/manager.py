@@ -2,12 +2,12 @@ from core.cipher import cipher_factory
 from core.constans import STATUS_DECRYPTED, STATUS_ENCRYPTED
 from core.text import Text
 from core.exceptions import UnsupportedCipherError
-from core.buffer import Buffer
+
 
 
 class Manager:
-    def __init__(self, file_handler):
-        self.buffer =  Buffer()
+    def __init__(self, buffer, file_handler):
+        self.buffer =  buffer
         self.file_handler = file_handler
 
     def add_text(self, user_text: str) -> None:
