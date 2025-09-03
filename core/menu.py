@@ -1,7 +1,7 @@
 import json
 import sys
 
-from core.exceptions import UnsupportedCipherError, EmptyBufferError
+from core.exceptions import RotTypeMismatchError, EmptyBufferError, UnsupportedCipherError
 from core.manager import Manager
 from core.file_handler import FileHandler
 from core.buffer import Buffer
@@ -69,8 +69,8 @@ class Menu:
 
             rot_type = input("Enter rot type(rot13, rot47): ")
             try:
-                status = self.manager.process_cipher(index=index, rot_type=rot_type)
-            except UnsupportedCipherError as e:
+                status = self.manager.process_cipher(index=index, rot_type=rot_type).status
+            except (ValueError, RotTypeMismatchError, UnsupportedCipherError) as e:
                 print(f"{e}, try again\n")
                 continue
             else:

@@ -4,3 +4,7 @@ class UnsupportedCipherError(Exception):
 
 class EmptyBufferError(Exception):
     """Raised when empty buffer"""
+
+
+class RotTypeMismatchError(Exception):
+    """Raised when mismatch rot type"""
