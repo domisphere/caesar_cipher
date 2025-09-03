@@ -1,7 +1,7 @@
 [
     {
-        "text": "qbzvavx",
-        "rot_type": "rot13",
+        "text": "5@>:?:<",
+        "rot_type": "rot47",
         "status": "encrypted"
     },
     {
@@ -18,5 +18,10 @@
         "text": "<=2F5:2",
         "rot_type": "rot47",
         "status": "encrypted"
+    },
+    {
+        "text": "klaudia",
+        "rot_type": "",
+        "status": "decrypted"
     }
 ]

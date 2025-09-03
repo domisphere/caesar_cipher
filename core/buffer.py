@@ -1,6 +1,7 @@
 from dataclasses import asdict
 
 from core.text import Text
+from core.exceptions import EmptyBufferError
 
 
 class Buffer:
@@ -19,13 +20,18 @@ class Buffer:
         self.texts[index] = text_obj
 
     def all_strings(self) -> list[str]:
-        return [
-            f"{i}. {t.text} - rot type: {t.rot_type}, {t.status}"
-            for i, t in enumerate(self.texts, start=1)
-        ]
+        if self.texts:
+            return [
+                f"{i}. {t.text} - rot type: {t.rot_type}, {t.status}"
+                for i, t in enumerate(self.texts, start=1)
+            ]
+        raise EmptyBufferError("Buffer is empty")
 
     def to_dict_list(self) -> list[dict]:
         return [asdict(text_obj) for text_obj in self.texts]
 
     def from_dict_list(self, data) -> None:
         self.texts = [Text(**d) for d in data]
+
+
+

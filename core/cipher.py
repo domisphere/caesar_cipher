@@ -1,18 +1,19 @@
-from core.constans import ROT13, ROT47
+from abc import ABC, abstractmethod
+
+from core.constants import ROT13, ROT47
 from core.text import Text
 from core.exceptions import UnsupportedCipherError
-
-from abc import ABC, abstractmethod
 
 
 class Cipher(ABC):
     @abstractmethod
     def cipher(self, text_obj: Text) -> str:
-        pass
+        raise NotImplementedError
 
-    @abstractmethod
-    def process(self, text_obj, rot_type, status):
-        pass
+    def process(self, text_obj: Text, rot_type: str, status: str) -> Text:
+        transformed = self.cipher(text_obj)
+
+        return Text(text=transformed, rot_type=rot_type, status=status)
 
 
 class CipherRot13(Cipher):
@@ -30,11 +31,6 @@ class CipherRot13(Cipher):
 
         return new_text
 
-    def process(self, text_obj, rot_type, status):
-        text = self.cipher(text_obj)
-
-        return Text(text=text, rot_type=rot_type, status=status)
-
 
 class CipherRot47(Cipher):
 
@@ -50,11 +46,6 @@ class CipherRot47(Cipher):
                 new_text += char
 
         return new_text
-
-    def process(self, text_obj, rot_type, status):
-        text = self.cipher(text_obj)
-
-        return Text(text=text, rot_type=rot_type, status=status)
 
 
 def cipher_factory(rot_type: str) -> Cipher:

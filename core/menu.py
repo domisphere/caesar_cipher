@@ -1,7 +1,7 @@
 import json
 import sys
 
-from core.exceptions import UnsupportedCipherError
+from core.exceptions import UnsupportedCipherError, EmptyBufferError
 from core.manager import Manager
 from core.file_handler import FileHandler
 from core.buffer import Buffer
@@ -44,18 +44,21 @@ class Menu:
         self.manager.add_text(user_text)
         print(f"Text '{user_text}' has been added to the buffer")
 
-    def show_buffer(self) -> None:
-        lines = self.manager.buffer.all_strings()
-        if not lines:
-            print("Buffer is empty")
-        else:
+    def show_buffer(self) -> bool:
+        try:
+            lines = self.manager.buffer.all_strings()
             print("Texts in buffer:")
             for line in lines:
                 print(line)
+            return True
+        except EmptyBufferError as e:
+            print(e)
+            return False
 
     def encrypt_decrypt(self) -> None:
         while True:
-            self.show_buffer()
+            if not self.show_buffer():
+                return
 
             try:
                 index = int(input("Select text: ")) - 1

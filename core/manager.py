@@ -1,5 +1,5 @@
 from core.cipher import cipher_factory
-from core.constans import STATUS_DECRYPTED, STATUS_ENCRYPTED
+from core.constants import STATUS_DECRYPTED, STATUS_ENCRYPTED
 from core.text import Text
 from core.exceptions import UnsupportedCipherError
 

@@ -1,4 +1,4 @@
-from core.text import *
+from core.text import Text
 
 
 def test_create_correct_object():
