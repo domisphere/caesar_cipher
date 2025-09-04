@@ -1,5 +1,7 @@
 import pytest
+
 from core.buffer import Buffer
+from core.exceptions import EmptyBufferError
 from core.text import Text
 
 
@@ -40,8 +42,13 @@ def test_update_object_at_given_index(filled_buffer):
     assert filled_buffer.texts == [Text(text="Klaudia", rot_type="rot47", status="encrypted")]
 
 
-def test_return_formated_list_of_texts(filled_buffer):
+def test_return_formatted_list_when_buffer_has_one_item(filled_buffer):
     assert filled_buffer.all_strings() == ['1. Dominik - rot type: rot13, decrypted']
+
+
+def test_should_raise_exception_when_buffer_is_empty(empty_buffer):
+    with pytest.raises(EmptyBufferError):
+        empty_buffer.all_strings()
 
 
 def test_text_obj_converted_to_dict_list(filled_buffer):
@@ -58,6 +65,9 @@ def test_round_trip_conversion(filled_buffer, empty_buffer):
     data = filled_buffer.to_dict_list()
     empty_buffer.from_dict_list(data)
     assert empty_buffer.texts == filled_buffer.texts
+
+
+
 
 
 

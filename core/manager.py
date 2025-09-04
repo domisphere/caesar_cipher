@@ -4,7 +4,6 @@ from core.text import Text
 from core.exceptions import RotTypeMismatchError
 
 
-
 class Manager:
     def __init__(self, buffer, file_handler):
         self.buffer =  buffer

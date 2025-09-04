@@ -1,20 +1,57 @@
-# Virtual environment
+# ── Virtual envs ──
 .venv/
 venv/
 env/
+ENV/
+env.bak/
+venv.bak/
 
-# Python cache
+# ── Python cache ──
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
 
-# Distribution / packaging
+# ── Packaging / build ──
 *.egg-info/
+.eggs/
 dist/
 build/
+develop-eggs/
+.installed.cfg
+*.egg
+MANIFEST
 
-# IDE / edytory
+# ── Tests / coverage ──
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py.cover
+
+# ── Typing / linters ──
+.mypy_cache/
+.pytype/
+.pyre/
+.ruff_cache/
+
+# ── IDE / editors ──
 .vscode/
 .idea/
 *.swp
+*.swo
+
+# ── OS files ──
+.DS_Store
+Thumbs.db
+
+# ── Logs / temp ──
+*.log
+*.tmp
+*.bak
+
+# ── Project-specific  ──
+data/*.json
