@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
 from core.constants import ROT13, ROT47
-from core.text import Text
 from core.exceptions import UnsupportedCipherError
+from core.text import Text
 
 
 class Cipher(ABC):
@@ -17,7 +17,6 @@ class Cipher(ABC):
 
 
 class CipherRot13(Cipher):
-
     def cipher(self, text_obj: Text) -> str:
         new_text = ""
 
@@ -33,7 +32,6 @@ class CipherRot13(Cipher):
 
 
 class CipherRot47(Cipher):
-
     def cipher(self, text_obj: Text) -> str:
         new_text = ""
 

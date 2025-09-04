@@ -1,10 +1,10 @@
 import json
 import sys
 
-from core.exceptions import RotTypeMismatchError, EmptyBufferError, UnsupportedCipherError
-from core.manager import Manager
-from core.file_handler import FileHandler
 from core.buffer import Buffer
+from core.exceptions import EmptyBufferError, RotTypeMismatchError, UnsupportedCipherError
+from core.file_handler import FileHandler
+from core.manager import Manager
 
 
 class Menu:
@@ -16,7 +16,7 @@ class Menu:
             "3": self.encrypt_decrypt,
             "4": self.save_to_file,
             "5": self.load_from_file,
-            "6": self.exit_program
+            "6": self.exit_program,
         }
 
     def main_menu(self) -> None:
@@ -78,7 +78,7 @@ class Menu:
                 return
 
     def save_to_file(self) -> None:
-        filename  = input("Enter file name: ")
+        filename = input("Enter file name: ")
 
         try:
             self.manager.save_to_file(filename=filename)
@@ -102,6 +102,3 @@ class Menu:
     def exit_program(self) -> None:
         print("Good bye!")
         sys.exit(0)
-
-
-

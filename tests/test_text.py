@@ -7,6 +7,7 @@ def test_create_correct_object():
     assert obj.rot_type == "rot13"
     assert obj.status == "decrypted"
 
+
 def test_empty_string():
     obj = Text(text="", rot_type="", status="")
     assert obj.text == ""

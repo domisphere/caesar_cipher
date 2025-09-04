@@ -43,7 +43,7 @@ def test_update_object_at_given_index(filled_buffer):
 
 
 def test_return_formatted_list_when_buffer_has_one_item(filled_buffer):
-    assert filled_buffer.all_strings() == ['1. Dominik - rot type: rot13, decrypted']
+    assert filled_buffer.all_strings() == ["1. Dominik - rot type: rot13, decrypted"]
 
 
 def test_should_raise_exception_when_buffer_is_empty(empty_buffer):
@@ -52,26 +52,18 @@ def test_should_raise_exception_when_buffer_is_empty(empty_buffer):
 
 
 def test_text_obj_converted_to_dict_list(filled_buffer):
-    assert filled_buffer.to_dict_list() == [{'text': 'Dominik', 'rot_type': 'rot13', 'status': 'decrypted'}]
+    assert filled_buffer.to_dict_list() == [
+        {"text": "Dominik", "rot_type": "rot13", "status": "decrypted"}
+    ]
 
 
 def test_convert_from_dict_list(empty_buffer):
-    dicts_list = [{'text': 'Dominik', 'rot_type': 'rot13', 'status': 'decrypted'}]
+    dicts_list = [{"text": "Dominik", "rot_type": "rot13", "status": "decrypted"}]
     empty_buffer.from_dict_list(dicts_list)
-    assert empty_buffer.texts == [Text(text='Dominik', rot_type='rot13', status='decrypted')]
+    assert empty_buffer.texts == [Text(text="Dominik", rot_type="rot13", status="decrypted")]
 
 
 def test_round_trip_conversion(filled_buffer, empty_buffer):
     data = filled_buffer.to_dict_list()
     empty_buffer.from_dict_list(data)
     assert empty_buffer.texts == filled_buffer.texts
-
-
-
-
-
-
-
-
-
-

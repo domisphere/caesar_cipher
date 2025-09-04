@@ -1,7 +1,7 @@
 from dataclasses import asdict
 
-from core.text import Text
 from core.exceptions import EmptyBufferError
+from core.text import Text
 
 
 class Buffer:
@@ -32,6 +32,3 @@ class Buffer:
 
     def from_dict_list(self, data) -> None:
         self.texts = [Text(**d) for d in data]
-
-
-
