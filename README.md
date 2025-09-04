@@ -42,7 +42,12 @@ project/
 │   └── file_handler.py
 ├── tests/
 │   ├── test_cipher.py
-│   └── ...
+│   ├── test_manager.py
+│   ├── test_buffer.py
+│   ├── test_text.py
+│   ├── test_menu.py
+│   └── test_file_handler
+├── data/
 ├── main.py
 └── README.md
 ```
