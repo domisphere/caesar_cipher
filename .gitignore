@@ -54,4 +54,6 @@ Thumbs.db
 *.bak
 
 # ── Project-specific  ──
-data/*.json
+data/*
+!data/.gitkeep
+!data/example.json
