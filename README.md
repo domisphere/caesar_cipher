@@ -1,6 +1,6 @@
 # 🔐 ROT Cipher Manager
 
-A simple Python project for encrypting and decrypting text using **ROT13** and **ROT47** ciphers.  
+A simple Python project for encrypting and decrypting text using **ROT13** and **ROT47** ciphers.
 The program allows you to add texts, manage a buffer, save to JSON files, and load them back.
 
 ---
