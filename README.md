@@ -5,16 +5,24 @@ The program allows you to add texts, manage a buffer, save to JSON files, and lo
 
 ---
 
+
 ## 🚀 Installation & Run
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/domisphere/caesar_cipher.git
    cd caesar_cipher
+   ```
+2. Run:
+   ```bash
+   pip install -r requirements.txt
+   python main.py
+   ```
 
 
-📌 Example Usage
+## 📌 Example Usage
 
+```
 --- MENU ---
 1. Add text
 2. Show buffer
@@ -26,19 +34,21 @@ The program allows you to add texts, manage a buffer, save to JSON files, and lo
 Choose an option: 1
 Enter text: Hello World
 Text 'Hello World' has been added to the buffer
-
-
-📂 Project Structure
 ```
-project/
+
+
+## 📂 Project Structure
+
+```
+caesar_cipher/
 ├── core/
 │   ├── cipher.py
 │   ├── manager.py
 │   ├── buffer.py
 │   ├── text.py
-│   ├── constans.py
-│   ├── exceptions.py
 │   ├── menu.py
+│   ├── constants.py
+│   ├── exceptions.py
 │   └── file_handler.py
 ├── tests/
 │   ├── test_cipher.py
@@ -46,12 +56,20 @@ project/
 │   ├── test_buffer.py
 │   ├── test_text.py
 │   ├── test_menu.py
-│   └── test_file_handler
+│   └── test_file_handler.py
 ├── data/
+│   └── .gitkeep
 ├── main.py
-└── README.md
+├── README.md
+├── requirements.txt
+├── .pre-commit-config.yaml
+├── pyproject.toml
+└── .github/
+    └── workflows/
+        └── ci.yml
+
 ```
 
 
-👤 Author
+## 👤 Author
 Dominik Rząsa

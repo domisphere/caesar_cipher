@@ -63,7 +63,7 @@ def test_convert_from_dict_list(empty_buffer):
     assert empty_buffer.texts == [Text(text="Dominik", rot_type="rot13", status="decrypted")]
 
 
-def test_round_trip_conversion(filled_buffer, empty_buffer):
+def test_round_trip_conversions(filled_buffer, empty_buffer):
     data = filled_buffer.to_dict_list()
     empty_buffer.from_dict_list(data)
     assert empty_buffer.texts == filled_buffer.texts
