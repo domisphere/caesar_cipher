@@ -1,7 +1,7 @@
-from core.menu import Menu
+from src.menu import Menu
 
 
-def main():
+def main() -> None:
     menu = Menu()
     menu.run()
 

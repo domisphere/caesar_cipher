@@ -1,11 +1,13 @@
-from core.cipher import cipher_factory
-from core.constants import STATUS_DECRYPTED, STATUS_ENCRYPTED
-from core.exceptions import RotTypeMismatchError
-from core.text import Text
+from src.buffer import Buffer
+from src.cipher import cipher_factory
+from src.constants import STATUS_DECRYPTED, STATUS_ENCRYPTED
+from src.exceptions import RotTypeMismatchError
+from src.file_handler import FileHandler
+from src.text import Text
 
 
 class Manager:
-    def __init__(self, buffer, file_handler):
+    def __init__(self, buffer: Buffer, file_handler: FileHandler) -> None:
         self.buffer = buffer
         self.file_handler = file_handler
 

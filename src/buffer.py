@@ -1,14 +1,14 @@
 from dataclasses import asdict
 
-from core.exceptions import EmptyBufferError
-from core.text import Text
+from src.exceptions import EmptyBufferError
+from src.text import Text
 
 
 class Buffer:
-    def __init__(self):
+    def __init__(self) -> None:
         self.texts: list[Text] = []
 
-    def add(self, text_obj: Text):
+    def add(self, text_obj: Text) -> None:
         self.texts.append(text_obj)
 
     def get(self, index: int) -> Text:
@@ -30,5 +30,5 @@ class Buffer:
     def to_dict_list(self) -> list[dict]:
         return [asdict(text_obj) for text_obj in self.texts]
 
-    def from_dict_list(self, data) -> None:
+    def from_dict_list(self, data: list[dict[str, str]]) -> None:
         self.texts = [Text(**d) for d in data]

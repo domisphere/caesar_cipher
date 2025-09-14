@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
-from core.constants import ROT13, ROT47
-from core.exceptions import UnsupportedCipherError
-from core.text import Text
+from src.constants import ROT13, ROT47
+from src.exceptions import UnsupportedCipherError
+from src.text import Text
 
 
 class Cipher(ABC):

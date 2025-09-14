@@ -1,14 +1,14 @@
 import json
 import sys
 
-from core.buffer import Buffer
-from core.exceptions import EmptyBufferError, RotTypeMismatchError, UnsupportedCipherError
-from core.file_handler import FileHandler
-from core.manager import Manager
+from src.buffer import Buffer
+from src.exceptions import EmptyBufferError, RotTypeMismatchError, UnsupportedCipherError
+from src.file_handler import FileHandler
+from src.manager import Manager
 
 
 class Menu:
-    def __init__(self):
+    def __init__(self) -> None:
         self.manager = Manager(buffer=Buffer(), file_handler=FileHandler())
         self.options = {
             "1": self.add_text,

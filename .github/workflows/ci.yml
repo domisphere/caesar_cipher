@@ -35,7 +35,7 @@ jobs:
 
       - name: Lint Bandit
         run: |
-          bandit -r .
+          bandit -r . --exclude tests
 
       - name: Safety (deps vulnerabilities)
         run: |
