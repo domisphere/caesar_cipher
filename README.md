@@ -41,7 +41,7 @@ Text 'Hello World' has been added to the buffer
 
 ```
 caesar_cipher/
-├── core/
+├── src/
 │   ├── cipher.py
 │   ├── manager.py
 │   ├── buffer.py

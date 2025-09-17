@@ -2,7 +2,11 @@ import json
 import sys
 
 from src.buffer import Buffer
-from src.exceptions import EmptyBufferError, RotTypeMismatchError, UnsupportedCipherError
+from src.exceptions import (
+    EmptyBufferError,
+    RotTypeMismatchError,
+    UnsupportedCipherError,
+)
 from src.file_handler import FileHandler
 from src.manager import Manager
 
