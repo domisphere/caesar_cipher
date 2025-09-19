@@ -1,6 +1,8 @@
 import json
 from types import SimpleNamespace
 
+import pytest
+
 from src.exceptions import EmptyBufferError
 from src.menu import Menu
 
@@ -167,3 +169,16 @@ class TestMenu:
 
         captured = capsys.readouterr().out
         assert "File corrupted or invalid JSON" in captured
+
+    def test_exit_program_prints_and_exits(self, capsys):
+        class StubManager:
+            pass
+
+        menu = create_menu_with_manager(StubManager())
+
+        with pytest.raises(SystemExit) as exc:
+            menu.exit_program()
+
+        captured = capsys.readouterr().out
+        assert "Good bye!" in captured
+        assert exc.value.code == 0

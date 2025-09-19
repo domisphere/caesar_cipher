@@ -34,3 +34,16 @@ class TestFileHandler:
         loaded_data = file_handler.load_from_file(str(filename))
 
         assert loaded_data == buffer_data
+
+    def test_load_from_file_missing_file_raises_error(self, tmp_path, file_handler):
+        filename = tmp_path / "missing.json"
+
+        with pytest.raises(FileNotFoundError):
+            file_handler.load_from_file(str(filename))
+
+    def test_load_from_file_raises_on_invalid_json(self, tmp_path, file_handler):
+        broken_file = tmp_path / "broken.json"
+        broken_file.write_text('{"invalid_json"}')
+
+        with pytest.raises(json.JSONDecodeError):
+            file_handler.load_from_file(str(broken_file))
