@@ -1,0 +1,169 @@
+import json
+from types import SimpleNamespace
+
+from src.exceptions import EmptyBufferError
+from src.menu import Menu
+
+
+def create_menu_with_manager(manager):
+    menu = Menu()
+    menu.manager = manager
+    return menu
+
+
+class TestMenu:
+    def test_add_text_adds_to_manager_and_prints(self, monkeypatch, capsys):
+        recorded = {}
+
+        class StubManager:
+            def add_text(self, text):
+                recorded["text"] = text
+
+        menu = create_menu_with_manager(StubManager())
+
+        monkeypatch.setattr("builtins.input", lambda _: "Hello")
+
+        menu.add_text()
+
+        captured = capsys.readouterr().out
+        assert recorded["text"] == "Hello"
+        assert "Text 'Hello' has been added to the buffer" in captured
+
+    def test_show_buffer_prints_lines_and_returns_true(self, capsys):
+        class StubBuffer:
+            def all_strings(self):
+                return ["first", "second"]
+
+        menu = create_menu_with_manager(SimpleNamespace(buffer=StubBuffer()))
+
+        assert menu.show_buffer() is True
+
+        captured = capsys.readouterr().out
+        assert "Texts in buffer:" in captured
+        assert "first" in captured
+        assert "second" in captured
+
+    def test_show_buffer_handles_empty_buffer_error(self, capsys):
+        class StubBuffer:
+            def all_strings(self):
+                raise EmptyBufferError("Buffer is empty")
+
+        menu = create_menu_with_manager(SimpleNamespace(buffer=StubBuffer()))
+
+        assert menu.show_buffer() is False
+
+        captured = capsys.readouterr().out
+        assert "Buffer is empty" in captured
+
+    def test_encrypt_decrypt_happy_path(self, monkeypatch, capsys):
+        class StubBuffer:
+            def __init__(self):
+                self.requested_index = None
+
+            def all_strings(self):
+                return ["stored text"]
+
+            def get(self, index):
+                self.requested_index = index
+                if index != 0:
+                    raise IndexError
+                return "stored text"
+
+        class StubManager:
+            def __init__(self):
+                self.buffer = StubBuffer()
+                self.process_calls = []
+
+            def process_cipher(self, index, rot_type):
+                self.process_calls.append((index, rot_type))
+                return SimpleNamespace(status="encrypted")
+
+        menu = create_menu_with_manager(StubManager())
+
+        inputs = iter(["1", "rot13"])
+        monkeypatch.setattr("builtins.input", lambda _: next(inputs))
+
+        menu.encrypt_decrypt()
+
+        captured = capsys.readouterr().out
+        assert menu.manager.buffer.requested_index == 0
+        assert menu.manager.process_calls == [(0, "rot13")]
+        assert "Text is encrypted" in captured
+
+    def test_save_to_file_success(self, monkeypatch, capsys):
+        class StubManager:
+            def __init__(self):
+                self.saved_filename = None
+
+            def save_to_file(self, filename):
+                self.saved_filename = filename
+
+        menu = create_menu_with_manager(StubManager())
+
+        monkeypatch.setattr("builtins.input", lambda _: "session1")
+
+        menu.save_to_file()
+
+        captured = capsys.readouterr().out
+        assert menu.manager.saved_filename == "session1"
+        assert "File saved" in captured
+
+    def test_save_to_file_handles_os_error(self, monkeypatch, capsys):
+        class StubManager:
+            def save_to_file(self, filename):
+                raise OSError("disk full")
+
+        menu = create_menu_with_manager(StubManager())
+
+        monkeypatch.setattr("builtins.input", lambda _: "session1")
+
+        menu.save_to_file()
+
+        captured = capsys.readouterr().out
+        assert "Error saving file: disk full" in captured
+
+    def test_load_from_file_success(self, monkeypatch, capsys):
+        class StubManager:
+            def __init__(self):
+                self.loaded_filename = None
+
+            def load_from_file(self, filename):
+                self.loaded_filename = filename
+
+        menu = create_menu_with_manager(StubManager())
+
+        monkeypatch.setattr("builtins.input", lambda _: "session1")
+
+        menu.load_from_file()
+
+        captured = capsys.readouterr().out
+        assert menu.manager.loaded_filename == "session1"
+        assert "File loaded" in captured
+
+    def test_load_from_file_handles_missing_file(self, monkeypatch, capsys):
+        class StubManager:
+            def load_from_file(self, filename):
+                raise FileNotFoundError
+
+        menu = create_menu_with_manager(StubManager())
+
+        monkeypatch.setattr("builtins.input", lambda _: "session1")
+
+        menu.load_from_file()
+
+        captured = capsys.readouterr().out
+        assert "File not found" in captured
+
+    def test_load_from_file_handles_json_error(self, monkeypatch, capsys):
+        class StubManager:
+            def load_from_file(self, filename):
+                raise json.JSONDecodeError("msg", "doc", 0)
+
+        menu = create_menu_with_manager(StubManager())
+
+        monkeypatch.setattr("builtins.input", lambda _: "session1")
+
+        menu.load_from_file()
+
+        captured = capsys.readouterr().out
+        assert "File corrupted or invalid JSON" in captured
